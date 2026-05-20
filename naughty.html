@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1750px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .window-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 550px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .title-bar-title {
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .title-bar-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-title {
+            width: 35px;
+            height: 28px;
+            border: none;
+            background: #7f8c8d;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-title:hover {
+            background: #95a5a6;
+            transform: scale(1.05);
+        }
+
+        .btn-minimize:hover {
+            background: #3498db;
+        }
+
+        .btn-close:hover {
+            background: #e74c3c;
+        }
+
+        .content {
+            padding: 25px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            background-color: #f8f9fa;
+        }
+
+        input[type="text"]:read-only {
+            background-color: #e8f4f8;
+            cursor: not-allowed;
+            border-color: #bdc3c7;
+        }
+
+        input[type="text"]::placeholder {
+            color: #95a5a6;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .optional-badge {
+            display: inline-block;
+            background: #e8f4f8;
+            color: #0c5460;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .output-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .output-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            color: #2c3e50;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        textarea:read-only {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .btn-copy {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+
+        .btn-clear {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
+        }
+
+        .alert {
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: #ecf0f1;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .validation-status {
+            font-size: 11px;
+            margin-top: 3px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .validation-valid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .validation-invalid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .validation-empty {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* Records Window Styles */
+        .records-container {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+            max-height: 1500px;
+            overflow-y: auto;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            color: #2c3e50;
+            word-break: break-all;
+            gap: 10px;
+        }
+
+        .record-item:hover {
+            background: #f0f1f2;
+        }
+
+        .record-text {
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .record-delete-btn {
+            padding: 4px 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .record-delete-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .records-empty {
+            padding: 20px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .records-footer {
+            padding: 15px;
+            border-top: 2px solid #ecf0f1;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .window-container {
+                max-width: 100%;
+            }
+
+            .content {
+                max-height: 60vh;
+            }
+
+            .records-container {
+                max-height: 40vh;
+            }
+
+            .optional-badge {
+                display: block;
+                margin-left: 0;
+                margin-top: 4px;
+            }
+
+            .record-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .record-delete-btn {
+                width: 100%;
+            }
+
+            .column {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 1150px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .window-container {
+                width: 100%;
+                max-width: 550px;
+            }
+        }
+
+        @media (max-width: 1750px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- INPUT WINDOW -->
+        <div class="window-container">
+            <div class="title-bar">
+                <div class="title-bar-title">Paid No Posted Notes</div>
+                <div class="title-bar-buttons"></div>
+            </div>
+
+            <div class="content">
+                <div class="info-box">
+                    <strong>Format Output:</strong> [claim number]+ [date]: Paid $[amount] Check#[check number] [R&S{reference number}]
+                </div>
+
+                <div id="alertBox" class="alert"></div>
+
+                <div class="form-group">
+                    <label for="text1">Claim number:</label>
+                    <input type="text" id="text1" placeholder="Enter number (spaces will be removed)" spellcheck="false">
+                    <div id="status1" class="validation-status"></div>
+                    <div class="input-hint">Example: 12345 or 123 456 → outputs as 123456</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="text2">Date:</label>
+                    <input type="text" id="text2" placeholder="mm/dd/yyyy" spellcheck="false">
+                    <div id="status2" class="validation-status"></div>
+                    <div class="input-hint">Example: 5/8/2026 or 05/18/2026 → outputs as 05/08/2026</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="text3">Amount (in USD):</label>
+                    <input type="text" id="text3" placeholder="0.00" spellcheck="false">
+                    <div id="status3" class="validation-status"></div>
+                    <div class="input-hint">Example: 150.50 or 150.5 → formats to 2 decimals</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="text4">Check number:</label>
+                    <input type="text" id="text4" placeholder="Enter check number (spaces will be removed)" spellcheck="false">
+                    <div id="status4" class="validation-status"></div>
+                    <div class="input-hint">Example: 1001 or 100 1 → outputs as 10011</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="text5">Reference Number: <span class="optional-badge">OPTIONAL</span></label>
+                    <input type="text" id="text5" placeholder="Enter reference number (spaces will be removed)" spellcheck="false">
+                    <div id="status5" class="validation-status"></div>
+                    <div class="input-hint">Example: 99999 or 999 99 → outputs as R&S99999</div>
+                </div>
+
+                <div class="output-section">
+                    <label class="output-label">Output:</label>
+                    <textarea id="outputBox" readonly></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-clear" onclick="clearAll()">Clear All</button>
+                    <button class="btn btn-copy" onclick="copyToClipboard()">Copy Output</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIDDLE COLUMN: PENDING/ADJUDICATED AND DENIED WINDOWS -->
+        <div class="column">
+            <!-- PENDING/ADJUDICATED WINDOW -->
+            <div class="window-container">
+                <div class="title-bar">
+                    <div class="title-bar-title">Pending/Adjudicated</div>
+                    <div class="title-bar-buttons"></div>
+                </div>
+
+                <div class="content">
+                    <div class="info-box">
+                        <strong>Format Output:</strong> [claim number]+ [Auto-generated reason]
+                    </div>
+
+                    <div id="alertBox2" class="alert"></div>
+
+                    <div class="form-group">
+                        <label for="text6">Claim number:</label>
+                        <input type="text" id="text6" placeholder="Enter number (spaces will be removed)" spellcheck="false">
+                        <div id="status6" class="validation-status"></div>
+                        <div class="input-hint">Example: 12345 or 123 456 → outputs as 123456</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text7">Pending Reason: <span class="optional-badge">AUTO</span></label>
+                        <input type="text" id="text7" placeholder="Auto-generated based on Amount and Date" spellcheck="false" readonly>
+                        <div id="status7" class="validation-status"></div>
+                        <div class="input-hint">Auto-filled. Leave Amount & Date empty for default pending message, or fill both for paid details.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text8">Amount (in USD): <span class="optional-badge">OPTIONAL</span></label>
+                        <input type="text" id="text8" placeholder="0.00" spellcheck="false">
+                        <div id="status8" class="validation-status"></div>
+                        <div class="input-hint">Example: 150.50 or 150.5 → formats to 2 decimals</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text9">Date: <span class="optional-badge">OPTIONAL</span></label>
+                        <input type="text" id="text9" placeholder="mm/dd/yyyy" spellcheck="false">
+                        <div id="status9" class="validation-status"></div>
+                        <div class="input-hint">Example: 5/8/2026 or 05/18/2026 → outputs as 05/08/2026</div>
+                    </div>
+
+                    <div class="output-section">
+                        <label class="output-label">Output:</label>
+                        <textarea id="outputBox2" readonly></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-clear" onclick="clearPending()">Clear All</button>
+                        <button class="btn btn-copy" onclick="copyToPending()">Copy Output</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DENIED WINDOW -->
+            <div class="window-container">
+                <div class="title-bar">
+                    <div class="title-bar-title">Denied</div>
+                    <div class="title-bar-buttons"></div>
+                </div>
+
+                <div class="content">
+                    <div class="info-box">
+                        <strong>Format Output:</strong> [claim number]+ [denied reason]
+                    </div>
+
+                    <div id="alertBox3" class="alert"></div>
+
+                    <div class="form-group">
+                        <label for="text10">Claim number:</label>
+                        <input type="text" id="text10" placeholder="Enter number (spaces will be removed)" spellcheck="false">
+                        <div id="status10" class="validation-status"></div>
+                        <div class="input-hint">Example: 12345 or 123 456 → outputs as 123456</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text11">Denied Reason:</label>
+                        <input type="text" id="text11" placeholder="Enter denied reason (long form text)" spellcheck="false">
+                        <div id="status11" class="validation-status"></div>
+                        <div class="input-hint">Enter the reason why the claim was denied.</div>
+                    </div>
+
+                    <div class="output-section">
+                        <label class="output-label">Output:</label>
+                        <textarea id="outputBox3" readonly></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-clear" onclick="clearDenied()">Clear All</button>
+                        <button class="btn btn-copy" onclick="copyToDenied()">Copy Output</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECORDS WINDOW -->
+        <div class="window-container">
+            <div class="title-bar">
+                <div class="title-bar-title">📋 Records</div>
+                <div class="title-bar-buttons"></div>
+            </div>
+
+            <ul id="recordsList" class="records-container">
+                <li class="records-empty">No records yet. Copy outputs to see them here.</li>
+            </ul>
+
+            <div class="records-footer">
+                <button class="btn btn-clear" onclick="clearRecords()">Clear All</button>
+                <button class="btn btn-copy" onclick="copyAllRecords()">Copy All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        const CONFIG = {
+            outputFormat: '{text1}+ {text2}: Paid ${text3} Check#{text4}{text5}',
+            emptyOutputText: '+ : Paid $ Check#',
+            pendingOutputFormat: '{text6}+ {text7}',
+            pendingDefaultReason: 'Pending: Claim is still in progress on the portal.',
+            pendingDetailedFormat: 'Details not available yet claim finalized and paid ${text8} on {text9}',
+            deniedOutputFormat: '{text10}+ {text11}'
+        };
+
+        // ==========================================
+        // DOM ELEMENTS
+        // ==========================================
+        const text1 = document.getElementById('text1');
+        const text2 = document.getElementById('text2');
+        const text3 = document.getElementById('text3');
+        const text4 = document.getElementById('text4');
+        const text5 = document.getElementById('text5');
+        const outputBox = document.getElementById('outputBox');
+        const alertBox = document.getElementById('alertBox');
+
+        const status1 = document.getElementById('status1');
+        const status2 = document.getElementById('status2');
+        const status3 = document.getElementById('status3');
+        const status4 = document.getElementById('status4');
+        const status5 = document.getElementById('status5');
+
+        const text6 = document.getElementById('text6');
+        const text7 = document.getElementById('text7');
+        const text8 = document.getElementById('text8');
+        const text9 = document.getElementById('text9');
+        const outputBox2 = document.getElementById('outputBox2');
+        const alertBox2 = document.getElementById('alertBox2');
+
+        const status6 = document.getElementById('status6');
+        const status7 = document.getElementById('status7');
+        const status8 = document.getElementById('status8');
+        const status9 = document.getElementById('status9');
+
+        const text10 = document.getElementById('text10');
+        const text11 = document.getElementById('text11');
+        const outputBox3 = document.getElementById('outputBox3');
+        const alertBox3 = document.getElementById('alertBox3');
+
+        const status10 = document.getElementById('status10');
+        const status11 = document.getElementById('status11');
+
+        const recordsList = document.getElementById('recordsList');
+
+        let records = JSON.parse(localStorage.getItem('appRecords')) || [];
+
+        // ==========================================
+        // EVENT LISTENERS
+        // ==========================================
+        text1.addEventListener('input', updateOutput);
+        text2.addEventListener('input', updateOutput);
+        text3.addEventListener('input', updateOutput);
+        text4.addEventListener('input', updateOutput);
+        text5.addEventListener('input', updateOutput);
+
+        text6.addEventListener('input', updatePendingOutput);
+        text8.addEventListener('input', updatePendingOutput);
+        text9.addEventListener('input', updatePendingOutput);
+
+        text10.addEventListener('input', updateDeniedOutput);
+        text11.addEventListener('input', updateDeniedOutput);
+
+        // ==========================================
+        // VALIDATION FUNCTIONS
+        // ==========================================
+        function removeSpaces(input) {
+            return input.replace(/\s/g, '');
+        }
+
+        function validateClaimNumber(input) {
+            if (input === '') return { valid: true, type: 'empty' };
+            const cleaned = removeSpaces(input);
+            const isValid = /^\d+$/.test(cleaned);
+            return { valid: isValid, type: isValid ? 'valid' : 'invalid', cleaned };
+        }
+
+        function validateDate(input) {
+            if (input === '') return { valid: true, type: 'empty', formatted: '' };
+            const flexibleDateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+            const match = input.match(flexibleDateRegex);
+            if (!match) {
+                return { valid: false, type: 'invalid', formatted: '' };
+            }
+            let [, month, day, year] = match;
+            month = month.padStart(2, '0');
+            day = day.padStart(2, '0');
+            const date = new Date(year, parseInt(month) - 1, parseInt(day));
+            const isValid = date.getMonth() === parseInt(month) - 1 && date.getDate() === parseInt(day);
+            if (isValid) {
+                return { valid: true, type: 'valid', formatted: `${month}/${day}/${year}` };
+            } else {
+                return { valid: false, type: 'invalid', formatted: '' };
+            }
+        }
+
+        function validateAmount(input) {
+            if (input === '') return { valid: true, type: 'empty', formatted: '' };
+            const isValid = /^\d+(\.\d{0,2})?$/.test(input);
+            if (!isValid) {
+                return { valid: false, type: 'invalid', formatted: '' };
+            }
+            const num = parseFloat(input);
+            const formatted = num.toFixed(2);
+            return { valid: true, type: 'valid', formatted };
+        }
+
+        function validateCheckNumber(input) {
+            if (input === '') return { valid: true, type: 'empty' };
+            const cleaned = removeSpaces(input);
+            const isValid = /^\d+$/.test(cleaned);
+            return { valid: isValid, type: isValid ? 'valid' : 'invalid', cleaned };
+        }
+
+        function validateReferenceNumber(input) {
+            if (input === '') return { valid: true, type: 'empty' };
+            const cleaned = removeSpaces(input);
+            const isValid = /^\d+$/.test(cleaned);
+            return { valid: isValid, type: isValid ? 'valid' : 'invalid', cleaned };
+        }
+
+        function validateLongFormText(input) {
+            if (input === '') return { valid: true, type: 'empty' };
+            return { valid: true, type: 'valid', text: input };
+        }
+
+        // ==========================================
+        // UI UPDATE FUNCTIONS
+        // ==========================================
+        function updateValidationStatus(element, validation) {
+            element.textContent = '';
+            element.className = 'validation-status';
+            if (validation.type === 'empty') {
+                element.textContent = '(optional)';
+                element.classList.add('validation-empty');
+            } else if (validation.type === 'valid') {
+                element.textContent = '✓ Valid';
+                element.classList.add('validation-valid');
+            } else if (validation.type === 'invalid') {
+                element.textContent = '✗ Invalid format';
+                element.classList.add('validation-invalid');
+            }
+        }
+
+        function updateOutput() {
+            const val1 = validateClaimNumber(text1.value);
+            const val2 = validateDate(text2.value);
+            const val3 = validateAmount(text3.value);
+            const val4 = validateCheckNumber(text4.value);
+            const val5 = validateReferenceNumber(text5.value);
+
+            updateValidationStatus(status1, val1);
+            updateValidationStatus(status2, val2);
+            updateValidationStatus(status3, val3);
+            updateValidationStatus(status4, val4);
+            updateValidationStatus(status5, val5);
+
+            let t1 = val1.valid ? (val1.cleaned || text1.value) : '';
+            if (val1.type === 'invalid') t1 = '';
+            let t2 = val2.valid ? (val2.formatted || text2.value) : '';
+            if (val2.type === 'invalid') t2 = '';
+            let t3 = val3.valid ? (val3.formatted || '') : '';
+            if (val3.type === 'invalid') t3 = '';
+            let t4 = val4.valid ? (val4.cleaned || text4.value) : '';
+            if (val4.type === 'invalid') t4 = '';
+            let t5 = val5.valid ? (val5.cleaned || text5.value) : '';
+            if (val5.type === 'invalid') t5 = '';
+
+            let text5Part = '';
+            if (t5) {
+                text5Part = ` R&S${t5}`;
+            }
+
+            const output = CONFIG.outputFormat
+                .replace('{text1}', t1)
+                .replace('{text2}', t2)
+                .replace('{text3}', t3)
+                .replace('{text4}', t4)
+                .replace('{text5}', text5Part);
+            outputBox.value = output;
+        }
+
+        function updatePendingOutput() {
+            const val6 = validateClaimNumber(text6.value);
+            const val8 = validateAmount(text8.value);
+            const val9 = validateDate(text9.value);
+
+            updateValidationStatus(status6, val6);
+            updateValidationStatus(status8, val8);
+            updateValidationStatus(status9, val9);
+
+            let t6 = val6.valid ? (val6.cleaned || text6.value) : '';
+            if (val6.type === 'invalid') t6 = '';
+            let t8 = val8.valid ? (val8.formatted || '') : '';
+            if (val8.type === 'invalid') t8 = '';
+            let t9 = val9.valid ? (val9.formatted || text9.value) : '';
+            if (val9.type === 'invalid') t9 = '';
+
+            let pendingReason = '';
+            const hasAmount = t8 && t8.trim() !== '';
+            const hasDate = t9 && t9.trim() !== '';
+
+            if (hasAmount && hasDate) {
+                pendingReason = CONFIG.pendingDetailedFormat
+                    .replace('{text8}', t8)
+                    .replace('{text9}', t9);
+            } else {
+                pendingReason = CONFIG.pendingDefaultReason;
+            }
+
+            text7.value = pendingReason;
+            updateValidationStatus(status7, { type: 'valid' });
+
+            const output = CONFIG.pendingOutputFormat
+                .replace('{text6}', t6)
+                .replace('{text7}', pendingReason);
+            outputBox2.value = output;
+        }
+
+        function updateDeniedOutput() {
+            const val10 = validateClaimNumber(text10.value);
+            const val11 = validateLongFormText(text11.value);
+
+            updateValidationStatus(status10, val10);
+            updateValidationStatus(status11, val11);
+
+            let t10 = val10.valid ? (val10.cleaned || text10.value) : '';
+            if (val10.type === 'invalid') t10 = '';
+            let t11 = val11.valid ? (val11.text || text11.value) : '';
+            if (val11.type === 'invalid') t11 = '';
+
+            const output = CONFIG.deniedOutputFormat
+                .replace('{text10}', t10)
+                .replace('{text11}', t11);
+            outputBox3.value = output;
+        }
+
+        function copyToClipboard() {
+            const text = outputBox.value;
+            if (!text || text === CONFIG.emptyOutputText) {
+                showAlert('Output is empty or invalid. Please fill in required fields.', 'info', alertBox);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                addRecord(text);
+                showAlert('✓ Output copied to clipboard!', 'success', alertBox);
+            }).catch(() => {
+                outputBox.select();
+                try {
+                    document.execCommand('copy');
+                    addRecord(text);
+                    showAlert('✓ Output copied to clipboard!', 'success', alertBox);
+                } catch (err) {
+                    showAlert('Failed to copy. Please try manually.', 'info', alertBox);
+                }
+            });
+        }
+
+        function copyToPending() {
+            const text = outputBox2.value;
+            if (!text || text.trim() === '') {
+                showAlert('Output is empty or invalid. Please fill in required fields.', 'info', alertBox2);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                addRecord(text);
+                showAlert('✓ Output copied to clipboard!', 'success', alertBox2);
+            }).catch(() => {
+                outputBox2.select();
+                try {
+                    document.execCommand('copy');
+                    addRecord(text);
+                    showAlert('✓ Output copied to clipboard!', 'success', alertBox2);
+                } catch (err) {
+                    showAlert('Failed to copy. Please try manually.', 'info', alertBox2);
+                }
+            });
+        }
+
+        function copyToDenied() {
+            const text = outputBox3.value;
+            if (!text || text.trim() === '') {
+                showAlert('Output is empty or invalid. Please fill in required fields.', 'info', alertBox3);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                addRecord(text);
+                showAlert('✓ Output copied to clipboard!', 'success', alertBox3);
+            }).catch(() => {
+                outputBox3.select();
+                try {
+                    document.execCommand('copy');
+                    addRecord(text);
+                    showAlert('✓ Output copied to clipboard!', 'success', alertBox3);
+                } catch (err) {
+                    showAlert('Failed to copy. Please try manually.', 'info', alertBox3);
+                }
+            });
+        }
+
+        function addRecord(record) {
+            records.unshift(record);
+            saveRecords();
+            renderRecords();
+        }
+
+        function deleteRecord(index) {
+            records.splice(index, 1);
+            saveRecords();
+            renderRecords();
+        }
+
+        function saveRecords() {
+            localStorage.setItem('appRecords', JSON.stringify(records));
+        }
+
+        function renderRecords() {
+            recordsList.innerHTML = '';
+            if (records.length === 0) {
+                recordsList.innerHTML = '<li class="records-empty">No records yet. Copy outputs to see them here.</li>';
+                return;
+            }
+            records.forEach((record, index) => {
+                const li = document.createElement('li');
+                li.className = 'record-item';
+                li.innerHTML = `
+                    <div class="record-text">${escapeHtml(record)}</div>
+                    <button class="record-delete-btn" onclick="deleteRecord(${index})">Delete</button>
+                `;
+                recordsList.appendChild(li);
+            });
+        }
+
+        function clearRecords() {
+            if (records.length === 0) {
+                showAlert('No records to clear.', 'info', alertBox);
+                return;
+            }
+            if (confirm('Are you sure you want to clear all records?')) {
+                records = [];
+                saveRecords();
+                renderRecords();
+                showAlert('All records cleared.', 'info', alertBox);
+            }
+        }
+
+        function copyAllRecords() {
+            if (records.length === 0) {
+                showAlert('No records to copy.', 'info', alertBox);
+                return;
+            }
+            const allRecords = records.join('\n');
+            navigator.clipboard.writeText(allRecords).then(() => {
+                showAlert('✓ All records copied to clipboard!', 'success', alertBox);
+            }).catch(() => {
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = allRecords;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showAlert('✓ All records copied to clipboard!', 'success', alertBox);
+                } catch (err) {
+                    showAlert('Failed to copy. Please try manually.', 'info', alertBox);
+                }
+            });
+        }
+
+        function clearAll() {
+            text1.value = '';
+            text2.value = '';
+            text3.value = '';
+            text4.value = '';
+            text5.value = '';
+            status1.textContent = '';
+            status2.textContent = '';
+            status3.textContent = '';
+            status4.textContent = '';
+            status5.textContent = '';
+            updateOutput();
+            showAlert('All fields cleared', 'info', alertBox);
+            text1.focus();
+        }
+
+        function clearPending() {
+            text6.value = '';
+            text7.value = '';
+            text8.value = '';
+            text9.value = '';
+            status6.textContent = '';
+            status7.textContent = '';
+            status8.textContent = '';
+            status9.textContent = '';
+            updatePendingOutput();
+            showAlert('All fields cleared', 'info', alertBox2);
+            text6.focus();
+        }
+
+        function clearDenied() {
+            text10.value = '';
+            text11.value = '';
+            status10.textContent = '';
+            status11.textContent = '';
+            updateDeniedOutput();
+            showAlert('All fields cleared', 'info', alertBox3);
+            text10.focus();
+        }
+
+        function showAlert(message, type, alertElement) {
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alertElement.classList.remove('show');
+            }, 500);
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        updateOutput();
+        updatePendingOutput();
+        updateDeniedOutput();
+        renderRecords();
+        text1.focus();
+    </script>
+</body>
+</html>
