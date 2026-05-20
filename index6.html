@@ -34,6 +34,8 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            flex: 1;
+            min-width: 300px;
         }
 
         .window-container {
@@ -41,10 +43,17 @@
             border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 550px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+        }
+
+        .window-container.paid-window {
+            flex: 1;
+        }
+
+        .window-container.resent-window {
+            flex: 0.6;
         }
 
         .title-bar {
@@ -98,29 +107,29 @@
         }
 
         .content {
-            padding: 25px;
+            padding: 20px;
             flex: 1;
             overflow-y: auto;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: 600;
             color: #2c3e50;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 2px solid #bdc3c7;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s ease;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -143,9 +152,9 @@
         }
 
         .input-hint {
-            font-size: 12px;
+            font-size: 11px;
             color: #7f8c8d;
-            margin-top: 4px;
+            margin-top: 3px;
             font-style: italic;
         }
 
@@ -153,39 +162,39 @@
             display: inline-block;
             background: #e8f4f8;
             color: #0c5460;
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 3px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            margin-left: 8px;
+            margin-left: 6px;
         }
 
         .output-section {
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
             border-top: 2px solid #ecf0f1;
         }
 
         .output-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #2c3e50;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         textarea {
             width: 100%;
-            min-height: 100px;
-            padding: 12px;
+            min-height: 60px;
+            padding: 10px;
             border: 2px solid #bdc3c7;
             border-radius: 4px;
             background-color: #f8f9fa;
-            font-size: 13px;
+            font-size: 12px;
             font-family: 'Courier New', monospace;
             resize: vertical;
             color: #2c3e50;
-            line-height: 1.6;
+            line-height: 1.5;
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
@@ -203,20 +212,20 @@
 
         .button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 18px;
+            gap: 8px;
+            margin-top: 12px;
             justify-content: flex-end;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            min-width: 100px;
+            min-width: 80px;
         }
 
         .btn-copy {
@@ -250,8 +259,8 @@
         }
 
         .validation-message {
-            font-size: 12px;
-            margin-top: 4px;
+            font-size: 11px;
+            margin-top: 3px;
             font-weight: 500;
         }
 
@@ -262,13 +271,83 @@
         .invalid {
             color: #e74c3c;
         }
+
+        /* Records List Styles */
+        .records-list {
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 12px;
+            background-color: white;
+            transition: background-color 0.2s ease;
+        }
+
+        .record-item:last-child {
+            border-bottom: none;
+        }
+
+        .record-item:hover {
+            background-color: #f0f4f8;
+        }
+
+        .record-text {
+            flex: 1;
+            word-break: break-all;
+            color: #2c3e50;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+            margin-right: 10px;
+        }
+
+        .record-timestamp {
+            font-size: 10px;
+            color: #7f8c8d;
+            white-space: nowrap;
+            margin-right: 10px;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            border: none;
+            border-radius: 3px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .empty-records {
+            padding: 20px;
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Left Column: Main Input Window -->
+        <!-- Left Column: Paid No Posted Notes & Resent -->
         <div class="column">
-            <div class="window-container">
+            <div class="window-container paid-window">
                 <div class="title-bar">
                     <span class="title-bar-title">Paid No Posted Notes</span>
                     <div class="title-bar-buttons"></div>
@@ -301,6 +380,12 @@
                         <p class="input-hint">Optional field</p>
                     </div>
 
+                    <div class="form-group">
+                        <label for="text5">Reference Number <span class="optional-badge">Optional</span></label>
+                        <input type="text" id="text5" placeholder="Enter reference number" />
+                        <p class="input-hint">Optional field</p>
+                    </div>
+
                     <div class="output-section">
                         <label class="output-label">Output:</label>
                         <textarea id="outputBox1" readonly></textarea>
@@ -314,7 +399,7 @@
             </div>
 
             <!-- Resent Window -->
-            <div class="window-container">
+            <div class="window-container resent-window">
                 <div class="title-bar">
                     <span class="title-bar-title">Resent</span>
                     <div class="title-bar-buttons"></div>
@@ -427,10 +512,13 @@
                 <div class="content">
                     <div class="output-section" style="margin-top: 0; padding-top: 0; border-top: none;">
                         <label class="output-label">Copy History:</label>
-                        <textarea id="recordsBox" readonly></textarea>
+                        <div class="records-list" id="recordsList">
+                            <div class="empty-records">No records yet</div>
+                        </div>
                     </div>
 
                     <div class="button-group">
+                        <button class="btn btn-copy" onclick="copyAllRecords()">Copy All</button>
                         <button class="btn btn-clear" onclick="clearRecords()">Clear All</button>
                     </div>
                 </div>
@@ -439,6 +527,8 @@
     </div>
 
     <script>
+        let recordsData = [];
+
         // Auto-sync text1 to text6 and text10
         document.getElementById('text1').addEventListener('input', function() {
             validateClaimID('text1');
@@ -467,6 +557,9 @@
 
         // Update outputs on text4 change
         document.getElementById('text4').addEventListener('input', updatePaid);
+
+        // Update outputs on text5 change
+        document.getElementById('text5').addEventListener('input', updatePaid);
 
         // Update pending on text7 change
         document.getElementById('text7').addEventListener('input', updatePending);
@@ -547,12 +640,16 @@
             const text2 = document.getElementById('text2').value;
             const text3 = document.getElementById('text3').value;
             const text4 = document.getElementById('text4').value;
+            const text5 = document.getElementById('text5').value;
 
             let output = '';
             if (text1 && text2 && text3) {
-                output = `${text1} Paid ${text2}`;
+                output = `${text1} ${text2}: Paid $${text3}`;
                 if (text4) {
-                    output += ` Check #${text4}`;
+                    output += ` CHECK#${text4}`;
+                }
+                if (text5) {
+                    output += ` R&S${text5}`;
                 }
             }
             document.getElementById('outputBox1').value = output;
@@ -631,16 +728,46 @@
 
         // Records Management
         function addToRecords(text) {
-            const recordsBox = document.getElementById('recordsBox');
             const timestamp = new Date().toLocaleString();
-            const entry = `[${timestamp}] ${text}\n\n`;
-            recordsBox.value += entry;
-            recordsBox.scrollTop = recordsBox.scrollHeight;
+            recordsData.unshift({ text, timestamp, id: Date.now() });
+            renderRecords();
+        }
+
+        function deleteRecord(id) {
+            recordsData = recordsData.filter(record => record.id !== id);
+            renderRecords();
+        }
+
+        function renderRecords() {
+            const recordsList = document.getElementById('recordsList');
+            
+            if (recordsData.length === 0) {
+                recordsList.innerHTML = '<div class="empty-records">No records yet</div>';
+                return;
+            }
+
+            recordsList.innerHTML = recordsData.map(record => `
+                <div class="record-item">
+                    <div class="record-text">${record.text}</div>
+                    <div class="record-timestamp">${record.timestamp}</div>
+                    <button class="btn-delete" onclick="deleteRecord(${record.id})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function copyAllRecords() {
+            if (recordsData.length === 0) {
+                alert('No records to copy');
+                return;
+            }
+            const allRecords = recordsData.map(r => `[${r.timestamp}] ${r.text}`).join('\n\n');
+            navigator.clipboard.writeText(allRecords);
         }
 
         function clearRecords() {
             if (confirm('Are you sure you want to clear all records?')) {
-                document.getElementById('recordsBox').value = '';
+                recordsData = [];
+                renderRecords();
             }
         }
 
@@ -650,6 +777,7 @@
             document.getElementById('text2').value = '';
             document.getElementById('text3').value = '';
             document.getElementById('text4').value = '';
+            document.getElementById('text5').value = '';
             document.getElementById('outputBox1').value = '';
             document.getElementById('text6').value = '';
             document.getElementById('text10').value = '';
